@@ -498,14 +498,14 @@ async function loadAll(){
   let migFlag=null;try{migFlag=await window.storage.get("jv2:meta:migrated_v2",true);}catch(e){}
   if(!migFlag||!migFlag.value){
     // primeira vez após a mudança de status: migra e regrava os valores corretos
-    for(const k in st){const bid=k.slice(6);const raw=parseInt(st[k],10)||0;const mig=migrateOldIndex(raw);statuses[bid]=mig;try{await window.storage.set(stKey(bid),String(mig),true);}catch(e){}}
+    for(const k in st){const bid=k.slice(7);const raw=parseInt(st[k],10)||0;const mig=migrateOldIndex(raw);statuses[bid]=mig;try{await window.storage.set(stKey(bid),String(mig),true);}catch(e){}}
     try{await window.storage.set("jv2:meta:migrated_v2","1",true);}catch(e){}
   }else{
     // já migrado: usar o valor salvo direto, sem reprocessar
-    for(const k in st){const bid=k.slice(6);let v=parseInt(st[k],10)||0;if(v<0||v>=STATUS.length)v=0;statuses[bid]=v;}
+    for(const k in st){const bid=k.slice(7);let v=parseInt(st[k],10)||0;if(v<0||v>=STATUS.length)v=0;statuses[bid]=v;}
   }
-  const cm=await listKV("jv2:cm:");for(const k in cm){try{comments[k.slice(6)]=JSON.parse(cm[k]);}catch(e){}}
-  const md=await listKV("jv2:md:");for(const k in md)media[k.slice(6)]=md[k];
+  const cm=await listKV("jv2:cm:");for(const k in cm){try{comments[k.slice(7)]=JSON.parse(cm[k]);}catch(e){}}
+  const md=await listKV("jv2:md:");for(const k in md)media[k.slice(7)]=md[k];
   try{const v=await window.storage.get("jotaname",false);if(v&&v.value)myName=v.value;}catch(e){}
   current=model.days[0].id;
 }
